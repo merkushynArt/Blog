@@ -2,6 +2,7 @@ import expess from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import authRoutes from './routes/auth.js';
 
 const app = expess();
 dotenv.config();
@@ -17,6 +18,10 @@ const DB_NAME = process.env.DB_NAME;
 app.use(cors());
 //Express буде розуміти що дані з фронту будуть приходити у форматі json
 app.use(expess.json());
+
+//Routes
+//http://localhost:3002/
+app.use('/api/auth', authRoutes);
 
 app.get('/', (req, res) => {
    res.json({message: 'All is fine'});
