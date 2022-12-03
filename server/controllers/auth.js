@@ -1,5 +1,6 @@
 import User from "../models/User.js"
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 // Register user
 export const register = async (req, res) => {
@@ -9,7 +10,7 @@ export const register = async (req, res) => {
       const isUsed = await User.findOne({ username });
       if(isUsed) {
          return res.json({
-            massage: 'Цей username вже зайнятий'
+            massage: 'Цей username вже зайнятий.'
          });
       }
 
@@ -39,8 +40,36 @@ export const register = async (req, res) => {
 // Login user
 export const login = async (req, res) => {
    try {
+      const {username, password} = req.body;
 
-   } catch (error) {}
+      const user = await User.findOne({username})
+      if(!user) {
+         return res.json({massage: 'Такого користувача немає.',});
+      }
+
+      //Функція compare дозволяє порівняти пароль котрий ввели та хешируваний пароль користувача
+      const isPasswordCorrect = await bcrypt.compare(password, user.password);
+      if(!isPasswordCorrect) {
+         return res.json({massage: 'Ви невірно ввели пароль.',})
+      }
+
+      //token потрібен для того щоб розуміти залогінились ми чи ні
+      const token = jwt.sign(
+         {
+            id: user._id,
+         },
+         process.env.JWT_SECRED,
+         { expiresIn: '30d' },
+      );
+
+      res.json({
+         token,
+         user,
+         massage: 'Ви уійшли в систему.',
+      });
+   } catch (error) {
+      res.json({massage: 'Помилка при авторізації',})
+   }
 }
 
 //Get me
