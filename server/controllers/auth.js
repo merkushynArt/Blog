@@ -72,9 +72,28 @@ export const login = async (req, res) => {
    }
 }
 
-//Get me
+//Get me цей роут завжди спрацьовувати при оновлювлені сторінки щоб не доводилося логінитись про кожному оновленю сторінки
 export const getMe = async (req, res) => {
    try {
+      //userId це той що я вшив де розшифровував токет (checkAuth.js 13 рядок)
+      const user = await User.findById(req.userId);
+      if(!user) {
+         return res.json({massage: 'Такого користувача немає.',});
+      }
 
-   } catch (error) {}
+      const token = jwt.sign(
+         {
+            id: user._id,
+         },
+         process.env.JWT_SECRED,
+         { expiresIn: '30d' },
+      );
+
+      res.json({
+         user,
+         token,
+      });
+   } catch (error) {
+      res.json({massage: 'Немає доступу',});
+   }
 }
