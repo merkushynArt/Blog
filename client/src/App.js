@@ -2,8 +2,8 @@
 
 function App() {
    return (
-      <div className="App">
-         
+      <div className="text-2xl text-violet-700">
+         wecewc
       </div>
    );
 }
