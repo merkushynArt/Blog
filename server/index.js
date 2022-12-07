@@ -29,7 +29,7 @@ app.get('/', (req, res) => {
 
 async function start() {
    try{
-      await mongoose.connect(`mongodb+srv://${DB_USER}:${DB_PASSWORD}@cluster0.rss3cwg.mongodb.net/${DB_NAME}?retryWrites=true&w=majority`);
+      await mongoose.connect(`mongodb+srv://${DB_USER}:${DB_PASSWORD}@cluster0.sso7a4s.mongodb.net/${DB_NAME}?retryWrites=true&w=majority`);
 
       app.listen(PORT, () => console.log(`Server started on port: ${PORT}, http://localhost:3002/`));
    } catch(error) {
