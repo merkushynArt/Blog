@@ -25,11 +25,20 @@ export const register = async (req, res) => {
          password: hash,
       });
 
+      const token = jwt.sign(
+         {
+            id: newUser._id,
+         },
+         process.env.JWT_SECRED,
+         { expiresIn: '30d' },
+      );
+
       //Зберігаю нового юзера
       await newUser.save();
 
       res.json({
          newUser,
+         token,
          massage: 'Реєстрація пройшла успішно.',
       })
    } catch (error) {
