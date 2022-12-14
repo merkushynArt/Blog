@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from '../../../utils/axios.js';
 
+//Початковий стан
 const initialState = {
    user: null,
    token: null,
@@ -18,6 +19,7 @@ export const registerUser = createAsyncThunk(
             password,
          });
 
+         //При реєстрації ми будемо зразу логінитися
          if(data.token) {
             window.localStorage.setItem('token', data.token);
          }
@@ -72,6 +74,7 @@ export const authSlice = createSlice({
          state.status = null;
       }
    },
+   //Контроль стану initialState
    extraReducers: {
       //Register user
       [registerUser.pending]: (state) => {
@@ -115,6 +118,7 @@ export const authSlice = createSlice({
          state.status = null;
          state.user = action.payload?.user;
          state.token = action.payload?.token;
+         state.status = action.payload.massage;
       },
       [getMe.rejected]: (state, action) => {
          state.status = action.payload.massage;
