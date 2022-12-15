@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import authRoutes from './routes/auth.js';
+import postRoutes from './routes/posts.js';
 
 const app = expess();
 dotenv.config();
@@ -22,6 +23,7 @@ app.use(expess.json());
 //Routes
 //http://localhost:3002/
 app.use('/api/auth', authRoutes);
+app.use('/api/post', postRoutes);
 
 app.get('/', (req, res) => {
    res.json({message: 'All is fine'});
